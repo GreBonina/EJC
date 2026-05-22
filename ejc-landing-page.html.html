@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EJC – Sorteio da Camiseta Católica do Brasil</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #13322B;
+    --verde-medio: #1a4438;
+    --verde-claro: #2a5c4a;
+    --ouro: #C9A84C;
+    --ouro-claro: #E8C97A;
+    --ouro-brilhante: #F5D98A;
+    --creme: #FAF6EE;
+    --branco: #ffffff;
+    --texto-escuro: #1a1a1a;
+    --disponivel: #13322B;
+    --selecionado: #C9A84C;
+    --pago: #8B1A1A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--verde);
+    color: var(--creme);
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 30%, rgba(201,168,76,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 20px,
+      rgba(201,168,76,0.5) 20px,
+      rgba(201,168,76,0.5) 21px
+    );
+    pointer-events: none;
+  }
+
+  .logo-container {
+    position: relative;
+    margin-bottom: 2rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .logo-ring {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 2px solid var(--ouro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 0 40px rgba(201,168,76,0.2), inset 0 0 40px rgba(201,168,76,0.05);
+  }
+
+  .logo-ring::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+
+  .logo-ring img {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  .divider-ouro {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+    margin: 1rem auto;
+  }
+
+  .eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--ouro);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    animation: fadeIn 1.2s ease;
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    color: var(--ouro-claro);
+    line-height: 1.15;
+    text-shadow: 0 2px 20px rgba(201,168,76,0.3);
+    animation: fadeInUp 1s ease 0.2s both;
+    max-width: 700px;
+  }
+
+  .hero h1 span.small-loc {
+    display: block;
+    font-size: 0.45em;
+    letter-spacing: 0.25em;
+    color: var(--ouro);
+    margin-top: 0.5rem;
+    font-weight: 400;
+  }
+
+  /* SORTEIO SECTION */
+  .section {
+    padding: 5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--ouro);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--ouro-claro);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    color: rgba(250,246,238,0.6);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 3rem;
+  }
+
+  /* CAMISA */
+  .camisa-section {
+    background: rgba(255,255,255,0.03);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .camisa-inner {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    flex-wrap: wrap;
+  }
+
+  .camisa-img-wrap {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .camisa-frame {
+    position: relative;
+    display: inline-block;
+  }
+
+  .camisa-frame::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 4px;
+  }
+
+  .camisa-frame::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 6px;
+  }
+
+  .camisa-frame img {
+    width: 100%;
+    max-width: 380px;
+    border-radius: 2px;
+    display: block;
+    filter: drop-shadow(0 20px 60px rgba(0,0,0,0.5));
+  }
+
+  .camisa-info { flex: 1; min-width: 280px; }
+
+  .prize-badge {
+    display: inline-block;
+    border: 1px solid var(--ouro);
+    color: var(--ouro);
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    padding: 0.4rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .camisa-info h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    color: var(--ouro-claro);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .sorteio-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .detail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: rgba(250,246,238,0.8);
+  }
+
+  .detail-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ouro);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .detail-row strong { color: var(--ouro-claro); }
+
+  .instagram-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ouro);
+    text-decoration: none;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .instagram-link:hover { color: var(--ouro-brilhante); border-color: var(--ouro-brilhante); }
+
+  /* TABELA DE NÚMEROS */
+  .numeros-section {
+    padding: 5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .legend {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(250,246,238,0.7);
+  }
+
+  .legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+  }
+
+  .dot-disponivel { background: var(--verde-claro); border: 1px solid rgba(201,168,76,0.3); }
+  .dot-selecionado { background: var(--ouro); }
+  .dot-pago { background: var(--pago); }
+
+  .numeros-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+    gap: 6px;
+    margin-bottom: 2rem;
+  }
+
+  .num-btn {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    border: 1px solid rgba(201,168,76,0.2);
+    background: var(--verde-claro);
+    color: rgba(250,246,238,0.7);
+    font-size: 0.7rem;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  .num-btn:hover:not(.pago) {
+    border-color: var(--ouro);
+    color: var(--ouro);
+    transform: scale(1.08);
+  }
+
+  .num-btn.selecionado {
+    background: var(--ouro);
+    color: var(--verde);
+    border-color: var(--ouro-brilhante);
+    font-weight: 700;
+  }
+
+  .num-btn.pago {
+    background: var(--pago);
+    color: rgba(250,246,238,0.5);
+    border-color: rgba(139,26,26,0.5);
+    cursor: not-allowed;
+  }
+
+  .selecionados-bar {
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .selecionados-bar p { font-size: 0.85rem; color: rgba(250,246,238,0.7); margin-bottom: 0.25rem; }
+  .selecionados-bar strong { color: var(--ouro-claro); font-size: 1rem; }
+
+  /* FORMULÁRIO */
+  .form-section {
+    background: rgba(255,255,255,0.03);
+    border-top: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .form-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--ouro);
+    font-family: 'Cinzel', serif;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+    padding: 0.9rem 1rem;
+    color: var(--creme);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input::placeholder { color: rgba(250,246,238,0.3); }
+  .form-input:focus { border-color: var(--ouro); background: rgba(255,255,255,0.07); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  /* PIX */
+  .pix-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+  }
+
+  .pix-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 2.5rem;
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .pix-qr {
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .pix-qr img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 2px solid rgba(201,168,76,0.3);
+    background: white;
+    padding: 8px;
+  }
+
+  .pix-qr p {
+    font-size: 0.65rem;
+    color: rgba(250,246,238,0.5);
+    letter-spacing: 0.1em;
+    margin-top: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .pix-dados { flex: 1; min-width: 220px; }
+
+  .pix-dados h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    color: var(--ouro);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .pix-row {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+  .pix-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .pix-row-label {
+    font-size: 0.65rem;
+    color: var(--ouro);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .pix-row-value {
+    font-size: 0.95rem;
+    color: var(--creme);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .copy-btn {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--ouro);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.7rem;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    transition: all 0.15s;
+    border-radius: 2px;
+  }
+  .copy-btn:hover { background: rgba(201,168,76,0.1); border-color: var(--ouro); }
+
+  /* BOTÃO */
+  .btn-gold {
+    display: block;
+    width: 100%;
+    padding: 1.1rem;
+    background: linear-gradient(135deg, var(--ouro) 0%, var(--ouro-brilhante) 50%, var(--ouro) 100%);
+    color: var(--verde);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 2rem;
+    text-transform: uppercase;
+  }
+  .btn-gold:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-gold:active { transform: translateY(0); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--verde-claro);
+    border: 1px solid var(--ouro);
+    color: var(--creme);
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { border-color: #4ade80; }
+  .toast.error { border-color: #f87171; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(201,168,76,0.15);
+    text-align: center;
+    padding: 2.5rem 2rem;
+    color: rgba(250,246,238,0.35);
+    font-size: 0.75rem;
+  }
+
+  footer a { color: var(--ouro); text-decoration: none; }
+  footer a:hover { color: var(--ouro-brilhante); }
+
+  .ig-footer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    color: var(--ouro);
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+
+  /* ANIMAÇÕES */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 1rem;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--verde-medio);
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 4px;
+    padding: 2.5rem;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    transform: scale(0.95);
+    transition: transform 0.3s;
+  }
+  .modal-overlay.open .modal { transform: scale(1); }
+
+  .modal-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    border: 2px solid var(--ouro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  .modal h3 {
+    font-family: 'Cinzel', serif;
+    color: var(--ouro-claro);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal p {
+    color: rgba(250,246,238,0.7);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-nums {
+    background: rgba(201,168,76,0.1);
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--ouro);
+    font-weight: 700;
+    font-size: 0.85rem;
+    word-break: break-all;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--ouro);
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+  }
+  .modal-close:hover { background: rgba(201,168,76,0.1); }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .camisa-inner { gap: 2rem; }
+    .pix-card { flex-direction: column; align-items: center; }
+    .numeros-grid { grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-pattern"></div>
+  <div class="logo-container">
+    <div class="logo-ring">
+      <img src="/mnt/user-data/uploads/1779402069917_image.png" alt="Logo EJC" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-family:Cinzel,serif;font-size:2rem;color:#C9A84C;font-weight:600;\'>EJC</span>'">
+    </div>
+  </div>
+  <p class="eyebrow">Paróquia Santa Luzia</p>
+  <div class="divider-ouro"></div>
+  <h1>
+    EJC — Encontro de Adolescentes com Cristo
+    <span class="small-loc">Samambaia Sul</span>
+  </h1>
+  <div class="divider-ouro" style="margin-top:1.5rem;"></div>
+</section>
+
+<!-- CAMISA -->
+<section class="camisa-section">
+  <div class="camisa-inner">
+    <div class="camisa-img-wrap">
+      <div class="camisa-frame">
+        <img src="/mnt/user-data/uploads/1779402264690_image.png" alt="Camiseta Católica do Brasil">
+      </div>
+    </div>
+    <div class="camisa-info">
+      <div class="prize-badge">PRÊMIO</div>
+      <h2>Sorteio da Camiseta Católica do Brasil</h2>
+      <div class="sorteio-details">
+        <div class="detail-row">
+          <div class="detail-icon">📅</div>
+          <span><strong>Data:</strong> 15 de junho de 2025</span>
+        </div>
+        <div class="detail-row">
+          <div class="detail-icon">🕖</div>
+          <span><strong>Horário:</strong> 19h00</span>
+        </div>
+        <div class="detail-row">
+          <div class="detail-icon">📱</div>
+          <span><strong>Sorteio ao vivo pelo Instagram:</strong>&nbsp;
+            <a href="https://www.instagram.com/ejcsamambaiasul?igsh=OGVpdWY5NDdjanRr" target="_blank" class="instagram-link">@ejcsamambaiasul</a>
+          </span>
+        </div>
+        <div class="detail-row">
+          <div class="detail-icon">🎟</div>
+          <span><strong>600 números</strong> disponíveis · <strong>R$ 10,00</strong> por número</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NÚMEROS -->
+<section class="numeros-section">
+  <p class="section-label">Participar</p>
+  <h2 class="section-title">Escolha seus números</h2>
+  <p class="section-subtitle">Clique nos números que deseja reservar. Números em dourado são sua seleção atual.</p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot dot-disponivel"></div> Disponível</div>
+    <div class="legend-item"><div class="legend-dot dot-selecionado"></div> Selecionado</div>
+    <div class="legend-item"><div class="legend-dot dot-pago"></div> Reservado / Pago</div>
+  </div>
+
+  <div class="selecionados-bar">
+    <p>Números selecionados</p>
+    <strong id="lista-selecionados">Nenhum número selecionado</strong>
+  </div>
+
+  <div class="numeros-grid" id="numeros-grid"></div>
+</section>
+
+<!-- FORMULÁRIO -->
+<section class="form-section">
+  <div class="form-inner">
+    <p class="section-label" style="text-align:center;">Seus dados</p>
+    <h2 class="section-title">Preencha para reservar</h2>
+    <p class="section-subtitle">Seus dados ficam registrados para identificação no sorteio.</p>
+
+    <div class="form-group">
+      <label class="form-label">Nome completo *</label>
+      <input type="text" class="form-input" id="nome" placeholder="Seu nome completo">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Telefone / WhatsApp *</label>
+        <input type="tel" class="form-input" id="telefone" placeholder="(61) 99999-9999">
+      </div>
+      <div class="form-group">
+        <label class="form-label">E-mail</label>
+        <input type="email" class="form-input" id="email" placeholder="seu@email.com">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Endereço</label>
+      <input type="text" class="form-input" id="endereco" placeholder="Cidade, bairro...">
+    </div>
+
+    <!-- PIX -->
+    <div class="divider-ouro" style="margin: 2.5rem auto;"></div>
+    <p class="section-label" style="text-align:center;">Pagamento</p>
+    <h2 class="section-title" style="font-size:1.6rem;">Pague via Pix</h2>
+    <p class="section-subtitle">Após reservar, efetue o pagamento para confirmar sua participação.</p>
+
+    <div class="pix-card">
+      <div class="pix-qr">
+        <img src="/mnt/user-data/uploads/1779401980332_image.png" alt="QR Code Pix">
+        <p>Escaneie para pagar</p>
+      </div>
+      <div class="pix-dados">
+        <h3>Dados do Pix</h3>
+        <div class="pix-row">
+          <div class="pix-row-label">Chave Pix</div>
+          <div class="pix-row-value">
+            <span id="chave-pix">westons@bol.com.br</span>
+            <button class="copy-btn" onclick="copiarPix()">COPIAR</button>
+          </div>
+        </div>
+        <div class="pix-row">
+          <div class="pix-row-label">Banco</div>
+          <div class="pix-row-value">PagBank</div>
+        </div>
+        <div class="pix-row">
+          <div class="pix-row-label">Favorecido</div>
+          <div class="pix-row-value">Weston de Sousa Ferreira</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-gold" onclick="reservar()">✝ Confirmar Reserva dos Números</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>EJC – Encontro de Adolescentes com Cristo · Paróquia Santa Luzia · Samambaia Sul</p>
+  <br>
+  <a href="https://www.instagram.com/ejcsamambaiasul?igsh=OGVpdWY5NDdjanRr" target="_blank" class="ig-footer">
+    📱 @ejcsamambaiasul
+  </a>
+  <br><br>
+  <p style="opacity:0.4; font-size:0.7rem;">Organização: EJC Samambaia Sul — Todos os direitos reservados</p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL CONFIRMAÇÃO -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-icon">✝</div>
+    <h3>Reserva Confirmada!</h3>
+    <p>Seus números foram reservados com sucesso. Após o pagamento via Pix, sua participação será confirmada.</p>
+    <div class="modal-nums" id="modal-nums"></div>
+    <p style="font-size:0.8rem; color:rgba(250,246,238,0.5); margin-bottom:1.5rem;">
+      Guarde a confirmação do pagamento. Em caso de dúvidas, entre em contato pelo Instagram.
+    </p>
+    <button class="modal-close" onclick="fecharModal()">ENTENDIDO</button>
+  </div>
+</div>
+
+<script>
+// Estado da aplicação
+const TOTAL_NUMEROS = 600;
+let numerosState = {}; // 'disponivel' | 'selecionado' | 'pago'
+let participantes = [];
+
+// Carrega dados do localStorage
+function carregarDados() {
+  try {
+    const saved = localStorage.getItem('ejc_numeros');
+    if (saved) numerosState = JSON.parse(saved);
+    const savedP = localStorage.getItem('ejc_participantes');
+    if (savedP) participantes = JSON.parse(savedP);
+  } catch(e) {}
+}
+
+function salvarDados() {
+  try {
+    localStorage.setItem('ejc_numeros', JSON.stringify(numerosState));
+    localStorage.setItem('ejc_participantes', JSON.stringify(participantes));
+  } catch(e) {}
+}
+
+// Inicializa alguns números como pagos para demonstração visual
+function inicializarDemostracao() {
+  if (Object.keys(numerosState).length === 0) {
+    const pagosDemos = [3,7,12,15,22,38,45,67,88,99,100,115,133,142,156,178,200,211,234,250,267,289,301,322,340,355,367,400,412,430,445,456,489,500,511,522,545,560,578,590];
+    pagosDemos.forEach(n => { numerosState[n] = 'pago'; });
+    salvarDados();
+  }
+}
+
+// Renderiza grid
+function renderGrid() {
+  const grid = document.getElementById('numeros-grid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= TOTAL_NUMEROS; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    btn.className = 'num-btn';
+    const estado = numerosState[i] || 'disponivel';
+    if (estado === 'selecionado') btn.classList.add('selecionado');
+    if (estado === 'pago') { btn.classList.add('pago'); btn.disabled = true; }
+    btn.addEventListener('click', () => toggleNumero(i, btn));
+    grid.appendChild(btn);
+  }
+  atualizarBarra();
+}
+
+function toggleNumero(num, btn) {
+  const estado = numerosState[num] || 'disponivel';
+  if (estado === 'pago') return;
+  if (estado === 'selecionado') {
+    delete numerosState[num];
+    btn.classList.remove('selecionado');
+  } else {
+    const selecionados = Object.values(numerosState).filter(v => v === 'selecionado').length;
+    if (selecionados >= 20) { showToast('Máximo de 20 números por vez.', 'error'); return; }
+    numerosState[num] = 'selecionado';
+    btn.classList.add('selecionado');
+  }
+  atualizarBarra();
+}
+
+function atualizarBarra() {
+  const sel = Object.entries(numerosState).filter(([,v]) => v === 'selecionado').map(([k]) => Number(k)).sort((a,b)=>a-b);
+  const bar = document.getElementById('lista-selecionados');
+  if (sel.length === 0) {
+    bar.textContent = 'Nenhum número selecionado';
+  } else {
+    bar.textContent = sel.join(', ') + ` (${sel.length} número${sel.length > 1 ? 's' : ''})`;
+  }
+}
+
+function reservar() {
+  const nome = document.getElementById('nome').value.trim();
+  const telefone = document.getElementById('telefone').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const endereco = document.getElementById('endereco').value.trim();
+
+  const selecionados = Object.entries(numerosState).filter(([,v]) => v === 'selecionado').map(([k]) => Number(k)).sort((a,b)=>a-b);
+
+  if (!nome) { showToast('Por favor, informe seu nome.', 'error'); return; }
+  if (!telefone) { showToast('Por favor, informe seu telefone.', 'error'); return; }
+  if (selecionados.length === 0) { showToast('Selecione pelo menos um número.', 'error'); return; }
+
+  // Marca como pago e salva participante
+  selecionados.forEach(n => { numerosState[n] = 'pago'; });
+
+  const participante = {
+    id: Date.now(),
+    nome, telefone, email, endereco,
+    numeros: selecionados,
+    data: new Date().toLocaleString('pt-BR'),
+    status: 'aguardando_pagamento'
+  };
+
+  participantes.push(participante);
+  salvarDados();
+
+  // Atualiza visual
+  renderGrid();
+
+  // Mostra modal
+  document.getElementById('modal-nums').textContent = 'Seus números: ' + selecionados.join(', ');
+  document.getElementById('modal-overlay').classList.add('open');
+
+  // Limpa formulário
+  ['nome','telefone','email','endereco'].forEach(id => document.getElementById(id).value = '');
+
+  console.log('📋 BANCO DE DADOS — Participante registrado:', JSON.stringify(participante, null, 2));
+  console.log('📋 TODOS OS PARTICIPANTES:', JSON.stringify(participantes, null, 2));
+}
+
+function fecharModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function copiarPix() {
+  const chave = document.getElementById('chave-pix').textContent;
+  navigator.clipboard.writeText(chave).then(() => {
+    showToast('Chave Pix copiada!');
+  }).catch(() => {
+    showToast('Chave: westons@bol.com.br');
+  });
+}
+
+function showToast(msg, tipo = 'success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast show ' + tipo;
+  setTimeout(() => { toast.className = 'toast'; }, 3000);
+}
+
+// Init
+carregarDados();
+inicializarDemostracao();
+renderGrid();
+
+// Fechar modal clicando fora
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) fecharModal();
+});
+</script>
+</body>
+</html>
